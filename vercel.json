@@ -11,14 +11,7 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/chat",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ],
-  "public": "public"
+    { "src": "/api/chat", "dest": "/server.js" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ]
 }
