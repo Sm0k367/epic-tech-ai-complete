@@ -5,15 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Epic Tech AI 🔥</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Three.js CDN for cosmic scene -->
+  <!-- Three.js from CDN (r128 is stable; you can update to latest if needed) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- Optional: particles.js or similar if you had it; we'll add simple particles in main.js -->
 </head>
 <body>
-  <!-- Background canvas for Three.js scene -->
+  <!-- Full-screen canvas for Three.js cosmic background / particles -->
   <div id="bg-canvas"></div>
 
-  <!-- Chat container -->
+  <!-- Main chat interface -->
   <div class="chat-container">
     <div class="chat-header">
       <h1>💯 Epic Tech AI 🔥™️</h1>
@@ -23,14 +22,20 @@
     <div id="chat-messages" class="chat-messages"></div>
 
     <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message... (e.g. 'build me a react component')" autocomplete="off" />
+      <input 
+        type="text" 
+        id="user-input" 
+        placeholder="Type your message... (e.g. 'build me a react component')" 
+        autocomplete="off" 
+      />
       <button id="send-btn">Send 🚀</button>
     </div>
   </div>
 
-  <!-- Audio for effects (optional, comment out if not needed) -->
+  <!-- Optional send sound effect (free Mixkit asset; remove if unwanted) -->
   <audio id="send-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-quick-lock-1084.mp3"></audio>
 
+  <!-- Load the main JavaScript logic last -->
   <script src="main.js"></script>
 </body>
 </html>
