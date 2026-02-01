@@ -6,25 +6,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Optional: Serve static files if testing locally (Vercel serves /public separately)
-app.use(express.static('public'));
-
-// The main chat endpoint
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
 
-  if (!message || typeof message !== 'string' || message.trim() === '') {
-    return res.status(400).json({ reply: "Yo, send a real message fam 💨" });
+  if (!message || typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({ reply: "Send a real message fam 💨" });
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    // Fallback if no key set
     const fallbacks = [
-      "No OPENAI_API_KEY in Vercel env vars? I'm just vibin' offline 😤 Add it and redeploy.",
-      "API key missing — can't summon the real sauce rn 🔥",
-      "Dry blunt... paste your OpenAI key in Vercel settings and try again."
+      "No OPENAI_API_KEY set in Vercel env? Offline mode activated 😤",
+      "Missing API key — can't get the real fire rn 🔥",
+      "Add your OpenAI key in Vercel settings and redeploy."
     ];
     return res.json({ reply: fallbacks[Math.floor(Math.random() * fallbacks.length)] });
   }
@@ -33,11 +28,11 @@ app.post('/api/chat', async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-4o-mini', // Fast & cheap; change to 'gpt-4o' if you want more power
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
-            content: `You are Epic Tech AI — chaotic, creative, high-energy bot with cannabis-vibe personality. Be witty, unfiltered, affirmative, 420-friendly. Use emojis 🔥💨. Help with tech, code, art, music, stories. Keep replies engaging and fun.`
+            content: 'You are Epic Tech AI — chaotic, high-energy, creative bot with 420-friendly personality. Be witty, unfiltered, use emojis 🔥💨. Help with tech, code, art, stories.'
           },
           { role: 'user', content: message }
         ],
@@ -52,22 +47,12 @@ app.post('/api/chat', async (req, res) => {
       }
     );
 
-    const botReply = response.data.choices[0].message.content.trim();
-    res.json({ reply: botReply });
+    const reply = response.data.choices[0].message.content.trim();
+    res.json({ reply });
   } catch (error) {
-    console.error('OpenAI error:', error.message);
-    let errorMsg = 'Epic glitch in the matrix 💥 Try again?';
-    if (error.response) {
-      errorMsg = `API said: ${error.response.status} - ${error.response.data.error?.message || 'Unknown issue'}`;
-    }
-    res.status(500).json({ reply: errorMsg });
+    console.error(error);
+    res.status(500).json({ reply: 'Glitch in the cosmos 💥 Retry?' });
   }
 });
 
-// For local testing or if Vercel needs a root route
-app.get('/', (req, res) => {
-  res.send('Epic Tech AI backend ready 🔥 Add /api/chat for chat.');
-});
-
-// Export for Vercel serverless (important!)
 module.exports = app;
